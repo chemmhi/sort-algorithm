@@ -59,9 +59,47 @@ def heap_sort(li):
     shift(li, 0, i-1)  #这个时候列表的最后一个数已经被替换成最大的那个根节点了，也就是列表里面的最大数，新的调整可以剔除最后一个数，
 
 
+def merge(li, low, mid, high):
+  """
+  性质：如果一个列表分成两半有序，那么可以通过一次归并让整个列表变得有序
+  需要两个指针，刚开始分别指向两个有序列表的最左边，然后依次进行比较，将小的那个数放到临时列表。需要两个循环，第一个循环用来将
+  左右两边以位数最少的那边进行排序，循环完列表只剩下一边
+  :param li:
+  :param low:
+  :param mid:
+  :param high:
+  :return:
+  """
+  i = low
+  j = mid +1
+  li_tmp = []
+  while i<= mid and j<=high:  #循环后后列表将只剩下一半的有序列表
+    if li[i] < li[j]:
+      li_tmp.append(li[i])
+      i +=1
+    else:
+      li_tmp.append(li[j])
+      j +=1
+  while i<=mid:  #这个循环和下面那个循环到时候只会执行一个
+    li_tmp.append(li[i])
+    i +=1
+  while j<=high:
+    li_tmp.append(li[j])
+    j +=1
+  li[low:high+1] = li_tmp
+  # print(li_tmp)
+
+def merge_sort(li, low, high):
+  if low < high:
+    mid = (low + high)//2
+    merge_sort(li, low, mid)
+    merge_sort(li, mid + 1, high)
+    merge(li, low, mid, high)
+
+
 a = list(range(1000000))
-# a = [4,1,2,3]
-random.shuffle(a)
+# a = [4,5,7,8,1,2,3,9]
+# random.shuffle(a)
 # print(a)
-heap_sort(a)
+merge_sort(a, 0, len(a)-1)
 print(a)
