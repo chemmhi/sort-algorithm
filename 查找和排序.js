@@ -84,4 +84,76 @@ const insertSort2 = function (li){
   }
   return li
 }
-console.log(insertSort2([11,222,3,4,5.2,6,7,8,9,8.8,5]))
+// console.log(insertSort2([11,222,3,4,5.2,6,7,8,9,8.8,5]))
+
+
+//快排
+
+const partition = function (li, low, high){
+  let tmp = li[low]
+  while(low < high){
+    while (low <high && tmp < li[high]){
+      high -=1
+    }
+    li[low] = li[high]
+    while (low < high && tmp > li[low]){
+      low +=1
+    }
+    li[high] = li[low]
+  }
+  li[low] = tmp
+  return low
+}
+
+const quickSort = function (li, low, high){
+  if (low < high){
+    let mid = partition(li, low, high)
+    quickSort(li, low, mid - 1)
+    quickSort(li, mid +1, high)
+  }
+}
+
+//堆排序
+
+const shift = function (li, low, high){
+  let i = low
+  let j = 2 * i + 1
+  let tmp = li[i]
+  while(j <= high){
+    if(j < high && li[j] < li[j + 1]){
+      j +=1
+    }
+    if(tmp < li[j]){
+      li[i] = li[j]
+      i = j
+      j = 2 * i +1
+    }else{
+      break
+    }
+  }
+  li[i] = tmp
+}
+
+const heapSort = function (li){
+  let n = li.length
+  //建堆
+  for( let i = Math.floor(n/2) - 1; i >= 0; i--){
+    shift(li, i, n-1)
+  }
+  //挨个出数
+  for(let i = n-1; i >= 0; i--){
+    let tmp = li[0]
+    li[0] = li[i]
+    li[i] = tmp
+    shift(li, 0, i-1)
+  }
+  // return li
+}
+
+let a = []
+for ( let i = 100000000; i > 0; i--){
+  a.push(i)
+}
+console.log(a)
+heapSort(a)
+console.log(a)
